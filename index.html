@@ -15,6 +15,10 @@ nav{display:flex;gap:24px}
 a{color:inherit;text-underline-offset:4px}
 nav a{text-decoration:none}
 a:hover{text-decoration:underline}
+.tags{display:flex;flex-wrap:wrap;gap:8px 24px;margin-bottom:24px}
+.tags button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.tags button[aria-pressed="true"],.tags button:hover{text-decoration:underline;text-underline-offset:4px}
+[hidden]{display:none!important}
 .projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 24px}
 .preview{display:flex;aspect-ratio:4/3;align-items:center;justify-content:center;background:#f2f2f2;overflow:hidden}
 .preview svg,.preview img{display:block;width:100%;height:100%;object-fit:cover}
@@ -31,8 +35,14 @@ article p{margin:4px 0 12px;color:#666}
 <body>
 <header><a class="brand" href="./">SerebraCode</a><nav aria-label="Main"><a href="#projects">Projects</a><a href="#info">Info</a></nav></header>
 <main>
+<div class="tags" id="tags" aria-label="Filter projects">
+<button type="button" data-filter="all" aria-pressed="true">All</button>
+<button type="button" data-filter="Glyphs" aria-pressed="false">Glyphs</button>
+<button type="button" data-filter="Figma" aria-pressed="false">Figma</button>
+<button type="button" data-filter="Digitone 2" aria-pressed="false">Digitone 2</button>
+</div>
 <section class="projects" id="projects" aria-label="Projects">
-<article>
+<article data-tag="Glyphs">
 <a class="preview" href="https://github.com/serebracode/nibb" aria-label="Nibb on GitHub">
 <svg viewBox="0 0 640 480" role="img" aria-label="Nibb typographic placeholder"><text x="320" y="240" text-anchor="middle" dominant-baseline="central" font-size="80" fill="#111" font-family="Nekst Mono,monospace">Nibb</text></svg>
 </a>
@@ -40,30 +50,41 @@ article p{margin:4px 0 12px;color:#666}
 <p>A drawing tool for Glyphs.</p>
 <a href="https://github.com/serebracode/nibb">GitHub ↗</a>
 </article>
-<article>
+<article data-tag="Figma">
 <div class="preview"><svg viewBox="0 0 640 480" role="img" aria-label="Firmware Display Simulator placeholder"><text text-anchor="middle" dominant-baseline="central" font-size="54" fill="#111" font-family="Nekst Mono,monospace"><tspan x="320" y="206">Firmware</tspan><tspan x="320" y="274">Display Simulator</tspan></text></svg></div>
 <h2>Firmware Display Simulator</h2>
 <p>Figma plugin for simulating hardware displays at physical scale.</p>
 <span>In development</span>
 </article>
-<article>
+<article data-tag="Glyphs">
 <a class="preview" href="https://github.com/serebracode/Glyphs-Scripts/blob/main/SerebroType-DemoGeneration-v.1.0.py"><svg viewBox="0 0 640 480" role="img" aria-label="Demo Generation placeholder"><text text-anchor="middle" dominant-baseline="central" font-size="54" fill="#111" font-family="Nekst Mono,monospace"><tspan x="320" y="240">Demo</tspan></text></svg></a>
 <h2>Demo Generation</h2>
 <p>Glyphs script for generating demo versions of fonts.</p>
 <a href="https://github.com/serebracode/Glyphs-Scripts/blob/main/SerebroType-DemoGeneration-v.1.0.py">GitHub ↗</a>
 </article>
-<article>
+<article data-tag="Glyphs">
 <a class="preview" href="https://github.com/serebracode/Glyphs-Scripts/blob/main/SerebroType-ExportSelected-v.1.0.py"><svg viewBox="0 0 640 480" role="img" aria-label="Export Selected Instances placeholder"><text text-anchor="middle" dominant-baseline="central" font-size="54" fill="#111" font-family="Nekst Mono,monospace"><tspan x="320" y="206">Export</tspan><tspan x="320" y="274">Selected</tspan></text></svg></a>
 <h2>Export Selected Instances</h2>
 <p>Glyphs script for exporting selected font instances as Glyphs, TTF or OTF files.</p>
 <a href="https://github.com/serebracode/Glyphs-Scripts/blob/main/SerebroType-ExportSelected-v.1.0.py">GitHub ↗</a>
 </article>
+<article data-tag="Digitone 2">
+<div class="preview"><svg viewBox="0 0 640 480" role="img" aria-label="DigiTool placeholder"><text x="320" y="240" text-anchor="middle" dominant-baseline="central" font-size="54" fill="#111" font-family="Nekst Mono,monospace">DigiTool</text></svg></div>
+<h2>DigiTool</h2>
+<p>Native macOS utility for designing Elektron Digitone II sounds through perceptual controls.</p>
+<span>In development</span>
+</article>
 </section>
 <section id="info" hidden><h2>Info</h2><p>Independent projects by Denis Serebryakov.</p></section>
 </main>
 <script>
-function showPage(){const info=location.hash==="#info";document.getElementById("projects").hidden=info;document.getElementById("info").hidden=!info;}
+function showPage(){const info=location.hash==="#info";document.getElementById("projects").hidden=info;document.getElementById("tags").hidden=info;document.getElementById("info").hidden=!info;}
 window.addEventListener("hashchange",showPage);showPage();
+const filters=document.querySelectorAll("[data-filter]");
+filters.forEach(button=>button.addEventListener("click",()=>{
+  filters.forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
+  document.querySelectorAll("#projects article").forEach(card=>{card.hidden=button.dataset.filter!=="all"&&card.dataset.tag!==button.dataset.filter;});
+}));
 </script>
 </body>
 </html>
