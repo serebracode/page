@@ -10,7 +10,7 @@
 html{scroll-behavior:smooth}
 body{margin:0;padding:24px;color:#111;background:#fff;font:400 16px/1.45 "Nekst Mono",monospace}
 header{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:48px}
-.brand{font-size:24px;text-decoration:none}
+.brand{font-size:inherit;text-decoration:none}
 nav{display:flex;gap:24px}
 a{color:inherit;text-underline-offset:4px}
 nav a{text-decoration:none}
@@ -21,7 +21,8 @@ a:hover{text-decoration:underline}
 h1,h2,p{font-size:inherit;font-weight:400;margin:0}
 article h2{margin-top:16px}
 article p{margin:4px 0 12px;color:#666}
-#info{margin-top:96px;border-top:1px solid #ddd;padding-top:24px;padding-bottom:24px}
+#info{max-width:65ch}
+#info[hidden],#projects[hidden]{display:none}
 #info p{margin-top:8px;max-width:65ch}
 @media(max-width:900px){.projects{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){body{padding:16px}header{gap:12px;margin-bottom:32px;flex-wrap:wrap}nav{gap:16px}.projects{grid-template-columns:1fr}}
@@ -40,7 +41,11 @@ article p{margin:4px 0 12px;color:#666}
 <a href="https://github.com/serebracode/nibb">GitHub ↗</a>
 </article>
 </section>
-<section id="info"><h2>Info</h2><p>Independent projects by Denis Serebryakov.</p></section>
+<section id="info" hidden><h2>Info</h2><p>Independent projects by Denis Serebryakov.</p></section>
 </main>
+<script>
+function showPage(){const info=location.hash==="#info";document.getElementById("projects").hidden=info;document.getElementById("info").hidden=!info;}
+window.addEventListener("hashchange",showPage);showPage();
+</script>
 </body>
 </html>
